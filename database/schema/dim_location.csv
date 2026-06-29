@@ -1,0 +1,38 @@
+location_key,location_id,country,state,geopolitical_zone,risk_level
+1,LOC_001,Nigeria,Abia,South East,Low
+2,LOC_002,Nigeria,Adamawa,North East,Low
+3,LOC_003,Nigeria,Akwa Ibom,South South,Low
+4,LOC_004,Nigeria,Anambra,South East,Medium
+5,LOC_005,Nigeria,Bauchi,North East,Low
+6,LOC_006,Nigeria,Bayelsa,South South,Low
+7,LOC_007,Nigeria,Benue,North Central,Low
+8,LOC_008,Nigeria,Borno,North East,Low
+9,LOC_009,Nigeria,Cross River,South South,Medium
+10,LOC_010,Nigeria,Delta,South South,High
+11,LOC_011,Nigeria,Ebonyi,South East,Low
+12,LOC_012,Nigeria,Edo,South South,High
+13,LOC_013,Nigeria,Ekiti,South West,Low
+14,LOC_014,Nigeria,Enugu,South East,Medium
+15,LOC_015,Nigeria,FCT,North Central,High
+16,LOC_016,Nigeria,Gombe,North East,Low
+17,LOC_017,Nigeria,Imo,South East,Medium
+18,LOC_018,Nigeria,Jigawa,North West,Low
+19,LOC_019,Nigeria,Kaduna,North West,High
+20,LOC_020,Nigeria,Kano,North West,High
+21,LOC_021,Nigeria,Katsina,North West,Medium
+22,LOC_022,Nigeria,Kebbi,North West,Low
+23,LOC_023,Nigeria,Kogi,North Central,Low
+24,LOC_024,Nigeria,Kwara,North Central,Medium
+25,LOC_025,Nigeria,Lagos,South West,Critical
+26,LOC_026,Nigeria,Nasarawa,North Central,Low
+27,LOC_027,Nigeria,Niger,North Central,Low
+28,LOC_028,Nigeria,Ogun,South West,High
+29,LOC_029,Nigeria,Ondo,South West,Medium
+30,LOC_030,Nigeria,Osun,South West,Low
+31,LOC_031,Nigeria,Oyo,South West,Medium
+32,LOC_032,Nigeria,Plateau,North Central,Low
+33,LOC_033,Nigeria,Rivers,South South,High
+34,LOC_034,Nigeria,Sokoto,North West,Low
+35,LOC_035,Nigeria,Taraba,North East,Low
+36,LOC_036,Nigeria,Yobe,North East,Low
+37,LOC_037,Nigeria,Zamfara,North West,Low
