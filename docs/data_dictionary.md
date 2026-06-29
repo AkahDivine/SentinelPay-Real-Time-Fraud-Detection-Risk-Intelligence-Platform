@@ -68,7 +68,7 @@ This data dictionary documents every table and column in the SentinelPay Postgre
 | Column | Data Type | Nullable | Description | Example Value |
 |---|---|---|---|---|
 | `location_key` | integer | NOT NULL | Surrogate primary key | `1` |
-| `location_id` | varchar(15) | NOT NULL | Business identifier for the location record | `LOC_001` |
+| `location_id` | varchar(20) | NOT NULL | Business identifier for the location record | `LOC_001` |
 | `country` | varchar(20) | NULL | Country name — always Nigeria for this system | `Nigeria` |
 | `state` | varchar(50) | NULL | Nigerian state name including FCT | `Lagos` |
 | `geopolitical_zone` | varchar(50) | NULL | One of six Nigerian geopolitical zones | `South West` |
@@ -104,7 +104,7 @@ This data dictionary documents every table and column in the SentinelPay Postgre
 | Column | Data Type | Nullable | Description | Example Value |
 |---|---|---|---|---|
 | `device_key` | integer | NOT NULL | Surrogate primary key | `1` |
-| `device_id` | varchar(15) | NOT NULL | Business identifier for the device | `DEV_001` |
+| `device_id` | varchar(20) | NOT NULL | Business identifier for the device | `DEV_001` |
 | `device_type` | varchar(20) | NULL | Category of device used for the transaction | `Mobile` |
 | `device_fingerprint` | varchar(255) | NULL | Unique cryptographic fingerprint identifying the specific device — used for anomaly detection | `a3f9c2e1b7d4...` |
 | `ip_address` | varchar(50) | NULL | IP address associated with the transaction — new IP combined with new device triggers elevated scoring | `102.89.45.231` |
@@ -128,7 +128,7 @@ This data dictionary documents every table and column in the SentinelPay Postgre
 | Column | Data Type | Nullable | Description | Example Value |
 |---|---|---|---|---|
 | `customer_key` | integer | NOT NULL | Surrogate primary key | `1` |
-| `customer_id` | varchar(15) | NOT NULL | Business identifier for the customer | `CUST_001` |
+| `customer_id` | varchar(20) | NOT NULL | Business identifier for the customer | `CUST_001` |
 | `full_name` | varchar(100) | NOT NULL | Customer full name — generated using Nigerian name patterns | `Emeka Okonkwo` |
 | `email` | varchar(100) | NULL | Customer email address | `emeka.okonkwo@gmail.com` |
 | `phone` | varchar(50) | NULL | Nigerian phone number | `+2348012345678` |
@@ -157,7 +157,7 @@ This data dictionary documents every table and column in the SentinelPay Postgre
 | Column | Data Type | Nullable | Description | Example Value |
 |---|---|---|---|---|
 | `merchant_key` | integer | NOT NULL | Surrogate primary key | `1` |
-| `merchant_id` | varchar(15) | NOT NULL | Business identifier for the merchant | `MERCH_001` |
+| `merchant_id` | varchar(20) | NOT NULL | Business identifier for the merchant | `MERCH_001` |
 | `merchant_name` | varchar(100) | NULL | Trading name of the merchant | `QuickMart Superstore` |
 | `merchant_category` | varchar(50) | NULL | Business category of the merchant — determines base risk classification | `Supermarket` |
 | `country` | varchar(20) | NULL | Country where merchant is registered — always Nigeria | `Nigeria` |
@@ -189,7 +189,7 @@ This data dictionary documents every table and column in the SentinelPay Postgre
 |---|---|---|---|---|
 | `account_key` | integer | NOT NULL | Surrogate primary key | `1` |
 | `customer_key` | integer | NOT NULL | Foreign key reference to `dim_customers` — one customer can have multiple accounts | `1` |
-| `account_id` | varchar(15) | NULL | Business identifier for the account | `ACC_001` |
+| `account_id` | varchar(20) | NULL | Business identifier for the account | `ACC_001` |
 | `account_type` | varchar(20) | NULL | Type of account held by the customer | `Savings` |
 | `balance` | numeric(18,2) | NULL | Current account balance in Nigerian Naira | `250000.00` |
 | `daily_limit` | numeric(18,2) | NULL | Maximum daily transaction limit in Naira — used to detect limit-breach fraud patterns | `500000.00` |
@@ -234,7 +234,7 @@ This data dictionary documents every table and column in the SentinelPay Postgre
 | `device_key` | integer | NOT NULL | Foreign key to `dim_device` | `7` |
 | `location_key` | integer | NOT NULL | Foreign key to `dim_location` — location where transaction was initiated | `3` |
 | `date_key` | integer | NOT NULL | Foreign key to `dim_date` | `20230315` |
-| `transaction_id` | varchar(15) | NULL | Unique business identifier for the transaction | `TXN_000001` |
+| `transaction_id` | varchar(20) | NULL | Unique business identifier for the transaction | `TXN_000001` |
 | `amount` | numeric(18,2) | NULL | Transaction amount in Nigerian Naira | `45000.00` |
 | `transaction_type` | varchar(25) | NULL | Specific nature of the transaction — determines direction and fraud profile | `Merchant Payment` |
 | `transaction_datetime` | timestamp | NULL | Full timestamp of when the transaction occurred — used for velocity, off-hour, and time-series analysis | `2023-03-15 02:34:11` |
