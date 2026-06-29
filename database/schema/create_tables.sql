@@ -120,6 +120,7 @@ CREATE TABLE fact_transactions (
     transaction_datetime      TIMESTAMP,
     channel                   VARCHAR(50),
     transaction_status        VARCHAR(20),
+	failure_reason            VARCHAR(50),
     transaction_direction     VARCHAR(20),
     counterparty_account_id   VARCHAR(20),
     counterparty_type         VARCHAR(20),
