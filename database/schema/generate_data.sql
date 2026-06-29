@@ -1,6 +1,8 @@
--- Generates one row per day from 2022-01-01 to 2027-12-31 using GENERATE_SERIES,
--- then calculates and inserts all date attributes for each day including
--- day name, week number, month, quarter, year, weekend flag, and month-end flag.
+/* 
+Generates one row per day from 2022-01-01 to 2027-12-31 using GENERATE_SERIES,
+then calculates and inserts all date attributes for each day including
+day name, week number, month, quarter, year, weekend flag, and month-end flag.
+*/
 INSERT INTO dim_date (
     date_key,
     full_date,
@@ -33,5 +35,34 @@ FROM GENERATE_SERIES(
     '1 day'::INTERVAL
 ) AS d;
  
- 
+
+/*
+Populate the dim_location table.
+
+1. Download the 'dim_location.csv' file from the project's Schema
+   folder.
+
+2. Import the data into PostgreSQL using ONE of the following methods:
+   - Option 1: Use pgAdmin's Import/Export Data feature (GUI).
+   - Option 2: Run the COPY command below.
+
+Note:
+- The CSV file already contains the location_key values.
+- Ensure the file path in the COPY command matches the location of
+  the downloaded CSV file on your computer.
+*/
+
+COPY dim_location (
+    location_key,
+    location_id,
+    country,
+    state,
+    risk_level
+)
+FROM 'Enter you dim_location file path here'
+WITH (
+    FORMAT CSV,
+    HEADER TRUE
+);
+
 
