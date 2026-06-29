@@ -240,6 +240,7 @@ This data dictionary documents every table and column in the SentinelPay Postgre
 | `transaction_datetime` | timestamp | NULL | Full timestamp of when the transaction occurred — used for velocity, off-hour, and time-series analysis | `2023-03-15 02:34:11` |
 | `channel` | varchar(50) | NULL | Platform or channel through which the transaction was initiated | `Mobile` |
 | `transaction_status` | varchar(20) | NULL | Current processing status of the transaction | `Completed` |
+| `failure_reason` | varchar(50) | NULL | Reason a transaction failed — NULL for all Completed transactions. Populated only when `transaction_status = Failed`. Used by the scoring engine to distinguish fraud-related failures from technical or legitimate failures. | `Daily Limit Exceeded` |
 | `transaction_direction` | varchar(20) | NULL | High-level direction of funds — drives inflow vs outflow scoring logic | `OUTFLOW` |
 | `counterparty_account_id` | varchar(15) | NULL | Account ID of the other party in the transaction — used to cross-reference known customers and merchants | `ACC_MERCH_042` |
 | `counterparty_type` | varchar(20) | NULL | Category of the counterparty entity — determines default risk score assignment | `MERCHANT` |
@@ -255,6 +256,19 @@ This data dictionary documents every table and column in the SentinelPay Postgre
 **Channel values:** Mobile, Web, POS, USSD, Bank Transfer  
 **Transaction status values:** Completed, Pending, Failed, Reversed  
 **Transaction direction values:** INFLOW, OUTFLOW
+
+**Failure reason values:**
+
+| Value | Description |
+|---|---|
+| `Daily Limit Exceeded` | Transaction amount exceeds the customer's configured daily transfer limit — triggers velocity probe detection in scoring engine |
+| `Insufficient Funds` | Account balance too low to complete the transaction — normal customer behaviour, no fraud signal |
+| `Invalid Account` | Destination account does not exist or is unrecognised — moderate fraud signal when repeated |
+| `Account Suspended` | Transaction blocked because the account is suspended — hard rule override fires in scoring engine |
+| `Network Timeout` | Transaction failed due to a technical connectivity issue — no fraud signal |
+| `Invalid PIN` | Wrong PIN entered — fraud signal when repeated rapidly, indicates account compromise attempt |
+| `Blocked by Fraud System` | Transaction proactively blocked by the scoring engine after reaching Critical risk tier |
+
 
 **Counterparty type values and default risk scores:**
 
