@@ -68,7 +68,6 @@ CREATE TABLE dim_customers (
     full_name             VARCHAR(100) NOT NULL,
     email                 VARCHAR(100),
     phone                 VARCHAR(50),
-    country               VARCHAR(20),
     gender                VARCHAR(15),
     date_of_birth         DATE,
     state                 VARCHAR(50),
