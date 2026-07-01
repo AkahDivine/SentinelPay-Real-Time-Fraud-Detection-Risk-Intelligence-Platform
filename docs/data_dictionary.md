@@ -132,7 +132,6 @@ This data dictionary documents every table and column in the SentinelPay Postgre
 | `full_name` | varchar(100) | NOT NULL | Customer full name — generated using Nigerian name patterns | `Emeka Okonkwo` |
 | `email` | varchar(100) | NULL | Customer email address | `emeka.okonkwo@gmail.com` |
 | `phone` | varchar(50) | NULL | Nigerian phone number | `+2348012345678` |
-| `country` | varchar(20) | NULL | Country of residence — always Nigeria | `Nigeria` |
 | `gender` | varchar(15) | NULL | Customer gender | `Male` |
 | `date_of_birth` | date | NULL | Customer date of birth | `1990-06-14` |
 | `state` | varchar(50) | NULL | Nigerian home state — primary anchor for location anomaly detection | `Lagos` |
