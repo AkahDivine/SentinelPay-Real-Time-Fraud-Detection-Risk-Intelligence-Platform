@@ -5,6 +5,18 @@
 -- Version: 1.0
 -- =============================================================
 
+
+DROP TABLE IF EXISTS fact_fraud_events CASCADE;
+DROP TABLE IF EXISTS fraud_alerts CASCADE;
+DROP TABLE IF EXISTS fact_risk_scores CASCADE;
+DROP TABLE IF EXISTS fact_transactions CASCADE;
+DROP TABLE IF EXISTS dim_accounts CASCADE;
+DROP TABLE IF EXISTS dim_merchants CASCADE;
+DROP TABLE IF EXISTS dim_customers CASCADE;
+DROP TABLE IF EXISTS dim_device CASCADE;
+DROP TABLE IF EXISTS dim_location CASCADE;
+DROP TABLE IF EXISTS dim_date CASCADE;
+
 -- 1. dim_date
 CREATE TABLE dim_date (
     date_key          INTEGER      NOT NULL,
