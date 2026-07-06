@@ -223,6 +223,31 @@ CREATE TABLE fact_fraud_events (
 
 
 
+CREATE TABLE account_balance_history (
+    history_key       SERIAL PRIMARY KEY,
+    account_key       INTEGER NOT NULL,
+    customer_key      INTEGER NOT NULL,
+    transaction_key   INTEGER NOT NULL,
+    transaction_type  VARCHAR(20),  -- DEBIT or CREDIT
+    amount            NUMERIC(18,2),
+    balance_before    NUMERIC(18,2),
+    balance_after     NUMERIC(18,2),
+    recorded_at       TIMESTAMP
+);
+
+CREATE TABLE rejected_transactions (
+    rejection_key        SERIAL PRIMARY KEY,
+    customer_key         INTEGER,
+    account_key          INTEGER,
+    merchant_key         INTEGER,
+    amount               NUMERIC(18,2),
+    transaction_type     VARCHAR(25),
+    transaction_datetime TIMESTAMP,
+    channel              VARCHAR(50),
+    rejection_reason     VARCHAR(100),
+    risk_score           INTEGER,
+    attempted_at         TIMESTAMP DEFAULT NOW()
+);
 
 
  
