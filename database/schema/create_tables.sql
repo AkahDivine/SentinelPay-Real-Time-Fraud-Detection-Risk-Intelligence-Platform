@@ -205,7 +205,7 @@ CREATE TABLE fact_fraud_events (
     customer_key          INTEGER      NOT NULL,
     alert_id              INTEGER,
     amount_flagged        NUMERIC(18,2),
-    fraud_type            VARCHAR(25),
+    fraud_type            VARCHAR(50),
     fraud_score           INTEGER,
     decision_taken        VARCHAR(50),
     rule_triggered        VARCHAR(50),
