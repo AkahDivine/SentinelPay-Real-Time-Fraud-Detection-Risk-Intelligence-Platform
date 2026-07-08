@@ -155,7 +155,7 @@ CREATE TABLE fact_transactions (
 
 -- 8. fact_risk_scores
 CREATE TABLE fact_risk_scores (
-    score_id              INTEGER      NOT NULL,
+    score_id 			  INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     transaction_key       INTEGER      NOT NULL,
     customer_key          INTEGER      NOT NULL,
     risk_score            INTEGER,
@@ -179,7 +179,7 @@ CREATE TABLE fact_risk_scores (
 
 -- 9. fraud_alerts
 CREATE TABLE fraud_alerts (
-    alert_id              INTEGER      NOT NULL,
+    alert_id			  INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     transaction_key       INTEGER      NOT NULL,
     customer_key          INTEGER      NOT NULL,
     alert_reason          VARCHAR(225),
@@ -200,7 +200,7 @@ CREATE TABLE fraud_alerts (
 
 -- 10. fact_fraud_events
 CREATE TABLE fact_fraud_events (
-    fraud_id              INTEGER      NOT NULL,
+    fraud_id 			  INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     transaction_key       INTEGER      NOT NULL,
     customer_key          INTEGER      NOT NULL,
     alert_id              INTEGER,
@@ -224,11 +224,11 @@ CREATE TABLE fact_fraud_events (
 
 
 CREATE TABLE account_balance_history (
-    history_key       SERIAL PRIMARY KEY,
+    history_key       INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     account_key       INTEGER NOT NULL,
     customer_key      INTEGER NOT NULL,
     transaction_key   INTEGER NOT NULL,
-    transaction_type  VARCHAR(20),  -- DEBIT or CREDIT
+    transaction_type  VARCHAR(20),  
     amount            NUMERIC(18,2),
     balance_before    NUMERIC(18,2),
     balance_after     NUMERIC(18,2),
@@ -236,7 +236,7 @@ CREATE TABLE account_balance_history (
 );
 
 CREATE TABLE rejected_transactions (
-    rejection_key        SERIAL PRIMARY KEY,
+    rejection_key        INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     customer_key         INTEGER,
     account_key          INTEGER,
     merchant_key         INTEGER,
