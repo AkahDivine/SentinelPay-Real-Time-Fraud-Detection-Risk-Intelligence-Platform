@@ -186,9 +186,10 @@ CREATE TABLE fraud_alerts (
     alert_severity        VARCHAR(50),
     risk_score            INTEGER,
     estimated_exposure    NUMERIC(18,2),
-    alert_status          VARCHAR(15),
+    alert_status          VARCHAR(20),
     created_at            TIMESTAMP,
     resolved_at           TIMESTAMP,
+	resolution_comment    VARCHAR(225)
 
     CONSTRAINT pk_fraud_alerts PRIMARY KEY (alert_id),
     CONSTRAINT fk_alerts_transaction FOREIGN KEY (transaction_key)
