@@ -226,28 +226,44 @@ CREATE TABLE fact_fraud_events (
 
 CREATE TABLE account_balance_history (
     history_key       INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    account_key       INTEGER NOT NULL,
-    customer_key      INTEGER NOT NULL,
-    transaction_key   INTEGER NOT NULL,
-    transaction_type  VARCHAR(20),  
+    account_key       INTEGER      NOT NULL,
+    customer_key      INTEGER      NOT NULL,
+    transaction_key   INTEGER,
+    movement_type     VARCHAR(10)  NOT NULL,  -- DEBIT or CREDIT
     amount            NUMERIC(18,2),
     balance_before    NUMERIC(18,2),
     balance_after     NUMERIC(18,2),
-    recorded_at       TIMESTAMP
+    recorded_at       TIMESTAMP    DEFAULT NOW(),
+ 
+    CONSTRAINT fk_abh_account
+        FOREIGN KEY (account_key)
+        REFERENCES dim_accounts(account_key),
+    CONSTRAINT fk_abh_customer
+        FOREIGN KEY (customer_key)
+        REFERENCES dim_customers(customer_key)
 );
+
+
 
 CREATE TABLE rejected_transactions (
     rejection_key        INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    customer_key         INTEGER,
-    account_key          INTEGER,
-    merchant_key         INTEGER,
-    amount               NUMERIC(18,2),
-    transaction_type     VARCHAR(25),
-    transaction_datetime TIMESTAMP,
-    channel              VARCHAR(50),
-    rejection_reason     VARCHAR(100),
-    risk_score           INTEGER,
-    attempted_at         TIMESTAMP DEFAULT NOW()
+    customer_key          INTEGER,
+    account_key           INTEGER,
+    merchant_key          INTEGER,
+    amount                NUMERIC(18,2),
+    transaction_type      VARCHAR(25),
+    transaction_datetime  TIMESTAMP,
+    channel               VARCHAR(50),
+    transaction_direction VARCHAR(20),
+    rejection_reason      VARCHAR(100),
+    attempted_at          TIMESTAMP DEFAULT NOW(),
+ 
+    CONSTRAINT fk_rt_customer
+        FOREIGN KEY (customer_key)
+        REFERENCES dim_customers(customer_key),
+    CONSTRAINT fk_rt_account
+        FOREIGN KEY (account_key)
+        REFERENCES dim_accounts(account_key)
 );
 
 
