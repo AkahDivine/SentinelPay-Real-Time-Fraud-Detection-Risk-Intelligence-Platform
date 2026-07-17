@@ -233,7 +233,7 @@ CREATE TABLE account_balance_history (
     amount            NUMERIC(18,2),
     balance_before    NUMERIC(18,2),
     balance_after     NUMERIC(18,2),
-    recorded_at       TIMESTAMP    DEFAULT NOW(),
+    recorded_at       TIMESTAMP,
  
     CONSTRAINT fk_abh_account
         FOREIGN KEY (account_key)
@@ -256,7 +256,7 @@ CREATE TABLE rejected_transactions (
     channel               VARCHAR(50),
     transaction_direction VARCHAR(20),
     rejection_reason      VARCHAR(100),
-    attempted_at          TIMESTAMP DEFAULT NOW(),
+    attempted_at          TIMESTAMP,
  
     CONSTRAINT fk_rt_customer
         FOREIGN KEY (customer_key)
