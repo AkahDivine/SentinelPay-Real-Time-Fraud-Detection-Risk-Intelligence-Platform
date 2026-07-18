@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS dim_accounts CASCADE;
 DROP TABLE IF EXISTS dim_merchants CASCADE;
 DROP TABLE IF EXISTS dim_customers CASCADE;
 DROP TABLE IF EXISTS dim_device CASCADE;
+DROP TABLE IF EXISTS customer_devices CASCADE;
 DROP TABLE IF EXISTS dim_location CASCADE;
 DROP TABLE IF EXISTS dim_date CASCADE;
 
@@ -53,13 +54,14 @@ CREATE TABLE dim_device (
     device_key            INTEGER      NOT NULL,
     device_id             VARCHAR(20)  NOT NULL,
     device_type           VARCHAR(20),
+	operating_system	  VARCHAR(50),
+	device_brand		  VARCHAR(50),
     device_fingerprint    VARCHAR(255),
     ip_address            VARCHAR(50),
     first_seen            TIMESTAMP,
 
     CONSTRAINT pk_dim_device PRIMARY KEY (device_key)
 );
-
 
 -- 4. dim_customers
 CREATE TABLE dim_customers (
