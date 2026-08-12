@@ -301,35 +301,37 @@ BEGIN
 
 -- Write to fact_risk_scores
 	INSERT INTO fact_risk_scores (
-	    transaction_key, 
-		customer_key, 
-		risk_score, 
-		risk_tier,
-	    calculated_at, 
-		model_version,
-	    velocity_flag, 
-		amount_flag, 
-		location_flag, 
-		device_flag,
-	    off_hour_flag, 
-		merchant_flag, 
-		inflow_flag
-	) VALUES (
-	    NEW.transaction_key, 
-		NEW.customer_key, 
-		v_final_score, 
-		v_risk_tier,
-	    NEW.transaction_datetime + INTERVAL '1 second', 
-		'v1.0',
+	    transaction_key,
+	    customer_key,
+	    risk_score,
+	    risk_tier,
+	    calculated_at,
+	    model_version,
+	    velocity_flag,
+	    amount_flag,
+	    location_flag,
+	    device_flag,
+	    off_hour_flag,
+	    merchant_flag,
+	    inflow_flag,
+	    hard_rule_triggered
+	)
+	VALUES (
+	    NEW.transaction_key,
+	    NEW.customer_key,
+	    v_final_score,
+	    v_risk_tier,
+	    NEW.transaction_datetime + INTERVAL '1 second',
+	    'v1.0',
 	    COALESCE(v_velocity_flag, FALSE),
-	    COALESCE(v_spike_flag,    FALSE),
+	    COALESCE(v_spike_flag, FALSE),
 	    COALESCE(v_location_flag, FALSE),
-	    COALESCE(v_device_flag,   FALSE),
-	    COALESCE(v_offhour_flag,  FALSE),
+	    COALESCE(v_device_flag, FALSE),
+	    COALESCE(v_offhour_flag, FALSE),
 	    COALESCE(v_merchant_flag, FALSE),
-	    COALESCE(v_inflow_flag,   FALSE)
+	    COALESCE(v_inflow_flag, FALSE),
+	    v_hard_triggered
 	);
-
 
 -- Write to fraud_alerts and fact_fraud_events if High/Critical
 	IF v_risk_tier IN ('High', 'Critical') THEN
