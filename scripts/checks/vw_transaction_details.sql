@@ -95,7 +95,7 @@ SELECT
             WHEN ft.counterparty_risk_score >= 30 THEN 'Medium'
             ELSE 'Low'
         END
-    ) AS counterparty_risk_tier,
+    )::TEXT AS counterparty_risk_tier,
 
     /* Device details and whether the device belongs to this customer. */
     dd.device_key,
