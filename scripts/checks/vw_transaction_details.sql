@@ -74,13 +74,28 @@ SELECT
         WHEN ft.counterparty_type IN ('External', 'Employer') THEN dcp.bank_name
         ELSE NULL
     END AS counterparty_bank_name,
-    ft.counterparty_risk_score,
-    CASE
-        WHEN ft.counterparty_risk_score >= 85 THEN 'Critical'
-        WHEN ft.counterparty_risk_score >= 60 THEN 'High'
-        WHEN ft.counterparty_risk_score >= 30 THEN 'Medium'
-        ELSE 'Low'
-    END AS counterparty_risk_tier,
+    /* Current entity score; transaction-captured score is the fallback. */
+    COALESCE(
+        CASE
+            WHEN ft.counterparty_type = 'Merchant' THEN dm.risk_score
+            WHEN ft.counterparty_type IN ('External', 'Employer') THEN dcp.risk_score
+            WHEN ft.counterparty_type = 'Customer' THEN counterparty_crp.risk_score
+        END,
+        ft.counterparty_risk_score
+    ) AS counterparty_risk_score,
+    COALESCE(
+        CASE
+            WHEN ft.counterparty_type = 'Merchant' THEN dm.risk_level
+            WHEN ft.counterparty_type IN ('External', 'Employer') THEN dcp.risk_tier
+            WHEN ft.counterparty_type = 'Customer' THEN counterparty_crp.risk_tier
+        END,
+        CASE
+            WHEN ft.counterparty_risk_score >= 85 THEN 'Critical'
+            WHEN ft.counterparty_risk_score >= 60 THEN 'High'
+            WHEN ft.counterparty_risk_score >= 30 THEN 'Medium'
+            ELSE 'Low'
+        END
+    ) AS counterparty_risk_tier,
 
     /* Device details and whether the device belongs to this customer. */
     dd.device_key,
@@ -137,8 +152,43 @@ SELECT
     fa.created_at AS alert_created_at,
     fa.resolved_at,
 
-	frs.hard_rule_triggered,
-	(frs.hard_rule_triggered IS NOT NULL) AS hard_rule_flag
+    /* Hard-rule evidence. */
+    frs.hard_rule_triggered,
+    (frs.hard_rule_triggered IS NOT NULL) AS hard_rule_flag,
+
+    /* Resolved merchant/external/employer/customer investigation fields. */
+    CASE
+        WHEN ft.counterparty_type = 'Merchant' THEN dm.merchant_key
+        WHEN ft.counterparty_type IN ('External', 'Employer') THEN dcp.counterparty_key
+        WHEN ft.counterparty_type = 'Customer' THEN counterparty_customer.customer_key
+    END AS resolved_counterparty_key,
+    CASE
+        WHEN ft.counterparty_type = 'Merchant' THEN dm.merchant_id
+        WHEN ft.counterparty_type IN ('External', 'Employer') THEN dcp.account_id
+        WHEN ft.counterparty_type = 'Customer' THEN counterparty_customer.customer_id
+        ELSE ft.counterparty_account_id
+    END AS resolved_counterparty_id,
+    CASE
+        WHEN ft.counterparty_type = 'Merchant' THEN dm.state
+        WHEN ft.counterparty_type = 'Customer' THEN counterparty_customer.state
+        /* dim_counterparty does not store state; use transaction state. */
+        ELSE dl.state
+    END AS counterparty_state,
+    CASE
+        WHEN ft.counterparty_type = 'Merchant' THEN dm.status
+        ELSE NULL
+    END AS counterparty_status,
+    CASE
+        WHEN ft.counterparty_type = 'Merchant' THEN dm.merchant_category
+        WHEN ft.counterparty_type IN ('External', 'Employer') THEN dcp.bank_name
+        WHEN ft.counterparty_type = 'Customer' THEN counterparty_customer.segment
+        ELSE NULL
+    END AS counterparty_category_or_bank,
+    CASE
+        WHEN ft.counterparty_type IN ('External', 'Employer') THEN dcp.created_at
+        WHEN ft.counterparty_type = 'Customer' THEN counterparty_customer.created_at
+        ELSE NULL
+    END AS counterparty_created_at
 
 FROM public.fact_transactions AS ft
 
@@ -169,29 +219,12 @@ LEFT JOIN public.dim_customers AS counterparty_customer
     ON counterparty_customer.customer_key = ft.counterparty_customer_key
    AND ft.counterparty_type = 'Customer'
 
+LEFT JOIN public.customer_risk_profile AS counterparty_crp
+    ON counterparty_crp.customer_key = ft.counterparty_customer_key
+   AND ft.counterparty_type = 'Customer'
+
 LEFT JOIN public.fact_fraud_events AS ffe
     ON ffe.transaction_key = ft.transaction_key
 
 LEFT JOIN public.fraud_alerts AS fa
     ON fa.transaction_key = ft.transaction_key;
-
-
-
-
-
-SELECT
-    c.customer_key,
-    c.customer_id,
-    c.full_name,
-    COUNT(DISTINCT rs.risk_tier) AS risk_tier_count
-FROM public.dim_customers AS c
-JOIN public.fact_transactions AS ft
-    ON ft.customer_key = c.customer_key
-JOIN public.fact_risk_scores AS rs
-    ON rs.transaction_key = ft.transaction_key
-WHERE rs.risk_tier IN ('Critical')
-GROUP BY
-    c.customer_key,
-    c.customer_id,
-    c.full_name
-ORDER BY c.customer_id;
