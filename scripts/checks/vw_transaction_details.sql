@@ -142,7 +142,7 @@ SELECT
     ffe.detected_at,
 
     /* Analyst-alert workflow details; blank when no alert exists. */
-    fa.alert_id,
+    fa.alert_key,
     fa.alert_reason,
     fa.alert_severity,
     fa.alert_status,
@@ -188,7 +188,9 @@ SELECT
         WHEN ft.counterparty_type IN ('External', 'Employer') THEN dcp.created_at
         WHEN ft.counterparty_type = 'Customer' THEN counterparty_customer.created_at
         ELSE NULL
-    END AS counterparty_created_at
+    END AS counterparty_created_at,
+
+	fa.alert_id
 
 FROM public.fact_transactions AS ft
 
